@@ -1,9 +1,8 @@
-local Speeds = 2000 -- Define o valor fixo da velocidade do Yoru
-local ToggleActive = false -- Controla se o spam está ativo ou não
+local Speeds = 100000 -- Define o valor fixo da velocidade do Yoru
+local ToggleActive = true -- Define que o spam já estará ativo ao iniciar
 
 -- Função para iniciar o spam
 function StartYoruSpam()
-    ToggleActive = true
     while ToggleActive do
         wait()
         local success, err = pcall(function()
@@ -33,20 +32,6 @@ function StartYoruSpam()
     end
 end
 
--- Função para parar o spam
-function StopYoruSpam()
-    ToggleActive = false
-end
-
--- Alterna entre iniciar e parar o spam
-game:GetService("UserInputService").InputBegan:Connect(function(input)
-    if input.KeyCode == Enum.KeyCode.F then -- Pressione 'F' para alternar
-        if not ToggleActive then
-            print("Yoru Spam Ativado!")
-            StartYoruSpam()
-        else
-            print("Yoru Spam Desativado!")
-            StopYoruSpam()
-        end
-    end
-end)
+-- Inicia o spam automaticamente
+print("Yoru Spam Ativado!")
+StartYoruSpam()
