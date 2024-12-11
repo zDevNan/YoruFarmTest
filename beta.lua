@@ -1,4 +1,4 @@
-local Speeds = 50000 -- Define o valor fixo da velocidade do Yoru
+local Speeds = 75000 -- Define o valor fixo da velocidade do Yoru
 local ToggleActive = true -- Define que o spam já estará ativo ao iniciar
 
 -- Função para iniciar o spam
