@@ -1,5 +1,6 @@
 _G.autocannon = false
 _G.behindFarm = false
+_G.hakiEnabled = false
 
 local MobList = {"Boar", "Crab", "Angry", "Thief", "Gunslinger", "Freddy"}
 
@@ -17,6 +18,7 @@ function ActivateHaki(state)
         local userId = game.Players.LocalPlayer.UserId
         local hakiEvent = game.Workspace.UserData["User_" .. userId].UpdateHaki
         hakiEvent:FireServer()
+        _G.hakiEnabled = state
     end)
 end
 
@@ -25,6 +27,7 @@ local RunService = game:GetService("RunService")
 
 RunService.Heartbeat:Connect(function()
     if _G.autocannon then
+        ActivateHaki(true)
         for _, enemy in pairs(workspace.Enemies:GetChildren()) do
             if enemy:FindFirstChild("HumanoidRootPart") and 
                (string.find(enemy.Name, " Boar") or string.find(enemy.Name, "Crab") or 
@@ -63,9 +66,12 @@ RunService.Heartbeat:Connect(function()
                 end
             end
         end
+    else
+        ActivateHaki(false)
     end
 
     if _G.behindFarm then
+        ActivateHaki(true)
         for _, mob in pairs(workspace.Enemies:GetChildren()) do
             if mob:FindFirstChild("HumanoidRootPart") and mob:FindFirstChild("Humanoid") 
                and mob.Humanoid.Health > 0 and IsMobAllowed(mob.Name) then
@@ -87,5 +93,7 @@ RunService.Heartbeat:Connect(function()
                 break
             end
         end
+    else
+        ActivateHaki(false)
     end
 end)
