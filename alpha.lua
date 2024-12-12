@@ -1,4 +1,16 @@
 _G.autocannon = false
+_G.behindFarm = false
+
+local MobList = {"Boar", "Crab", "Angry", "Thief", "Gunslinger", "Freddy"}
+
+function IsMobAllowed(mobName)
+    for _, allowedMob in ipairs(MobList) do
+        if string.find(mobName, allowedMob) then
+            return true
+        end
+    end
+    return false
+end
 
 function ActivateHaki(state)
     pcall(function()
@@ -49,6 +61,30 @@ RunService.Heartbeat:Connect(function()
                     }
                     cannon.RemoteEvent:FireServer(unpack(args))
                 end
+            end
+        end
+    end
+
+    if _G.behindFarm then
+        for _, mob in pairs(workspace.Enemies:GetChildren()) do
+            if mob:FindFirstChild("HumanoidRootPart") and mob:FindFirstChild("Humanoid") 
+               and mob.Humanoid.Health > 0 and IsMobAllowed(mob.Name) then
+
+                while mob.Humanoid.Health > 0 and _G.behindFarm do
+                    local mobRoot = mob.HumanoidRootPart
+                    local playerRoot = LP.Character.HumanoidRootPart
+
+                    playerRoot.CFrame = mobRoot.CFrame * CFrame.new(0, 0, 4)
+
+                    local tool = LP.Character:FindFirstChildOfClass("Tool")
+                    if tool then
+                        tool:Activate()
+                    else
+                        LP.Character.Humanoid:MoveTo(mobRoot.Position)
+                    end
+                    task.wait(0.1)
+                end
+                break
             end
         end
     end
