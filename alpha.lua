@@ -1,12 +1,68 @@
---[[
- .____                  ________ ___.    _____                           __                
- |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
- |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
- |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
- |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
-         \/          \/         \/    \/                \/     \/     \/                   
-          \_Welcome to LuaObfuscator.com   (Alpha 0.10.8) ~  Much Love, Ferib 
+-- Criação de Toggle para ativar/desativar a funcionalidade
+local ToggleFarm = FarmTab:CreateToggle({ 
+    Name = "Cannon Ball Mobs | All |",
+    CurrentValue = false,
+    Flag = "ToggleAutoBringMobs",
+    Callback = function(state)
+        _G.autocannon = state
+    end    
+})
 
-]]--
+-- Função para ativar/desativar Haki
+function ActivateHaki(state)
+    pcall(function()
+        local userId = game.Players.LocalPlayer.UserId
+        local hakiEvent = game.Workspace.UserData["User_" .. userId].UpdateHaki
+        hakiEvent:FireServer()
+    end)
+end
 
-local v0=string.char;local v1=string.byte;local v2=string.sub;local v3=bit32 or bit ;local v4=v3.bxor;local v5=table.concat;local v6=table.insert;local function v7(v11,v12) local v13={};for v16=1, #v11 do v6(v13,v0(v4(v1(v2(v11,v16,v16 + 1 )),v1(v2(v12,1 + (v16% #v12) ,1 + (v16% #v12) + 1 )))%256 ));end return v5(v13);end local v8=FarmTab:CreateToggle({[v7("\255\194\214\32","\126\177\163\187\69\134\219\167")]=v7("\0\204\36\203\243\45\141\8\196\240\47\141\7\202\254\48\141\54\133\221\47\193\106\217","\156\67\173\74\165"),[v7("\23\162\91\4\185\40\82\2\182\69\3\185","\38\84\215\41\118\220\70")]=false,[v7("\118\26\35\21","\158\48\118\66\114")]=v7("\159\43\23\49\127\160\218\190\48\31\20\97\172\245\172\9\31\52\96","\155\203\68\112\86\19\197"),[v7("\101\220\58\240\66\121\230\243","\152\38\189\86\156\32\24\133")]=function(v14) _G.autocannon=v14;end});function ActivateHaki(v15) pcall(function() local v17=0 -0 ;local v18;local v19;local v20;while true do if (v17==1) then v20=nil;while true do if (v18==(14 -(9 + 5))) then local v31=376 -(85 + 291) ;while true do if ((1265 -(243 + 1022))==v31) then v19=game.Players.LocalPlayer.UserId;v20=game.Workspace.UserData[v7("\201\68\162\84\195","\38\156\55\199")   .. v19 ].UpdateHaki;v31=3 -2 ;end if ((1 + 0)==v31) then v18=1181 -(1123 + 57) ;break;end end end if (v18==1) then v20:FireServer();break;end end break;end if (v17==(0 + 0)) then v18=254 -(163 + 91) ;v19=nil;v17=1;end end end);end spawn(function() while wait(1930.1 -(1869 + 61) ) do pcall(function() if _G.autocannon then for v27,v28 in pairs(game.Workspace.Enemies:GetChildren()) do if (v28:FindFirstChild(v7("\128\104\113\41\29\123\243\71\154\114\115\60\35\117\232\87","\35\200\29\28\72\115\20\154")) and (string.find(v28.Name,v7("\89\157\222\222\159","\84\121\223\177\191\237\76")) or string.find(v28.Name,v7("\152\68\200\162","\161\219\54\169\192\90\48\80")) or string.find(v28.Name,v7("\104\76\7\55\80","\69\41\34\96")) or string.find(v28.Name,v7("\158\194\217\14\11\63","\75\220\163\183\106\98")) or string.find(v28.Name,v7("\54\178\130\50\223","\185\98\218\235\87")) or string.find(v28.Name,v7("\253\51\44\243\208","\202\171\92\71\134\190")) or string.find(v28.Name,v7("\11\212\63\156\44\211","\232\73\161\76")) or string.find(v28.Name,v7("\157\203\71\89\26\162","\126\219\185\34\61")) or string.find(v28.Name,v7("\46\220\75\124\113","\135\108\174\62\18\30\23\147")) or string.find(v28.Name,v7("\130\225\63\204","\167\214\137\74\171\120\206\83")) or string.find(v28.Name,v7("\172\229\60\78\244\174\133\247\55\79","\199\235\144\82\61\152")) or string.find(v28.Name,v7("\32\3\183\37\2\4","\75\103\118\217")) or string.find(v28.Name,v7("\228\85\102\17","\126\167\52\16\116\217")))) then local v32=0 + 0 ;local v33;while true do if (1==v32) then v33.Size=Vector3.new(35 -25 ,15 -5 ,2 + 8 );v33.Anchored=true;v32=2 -0 ;end if (v32==(0 + 0)) then v33=v28.HumanoidRootPart;v33.CanCollide=false;v32=1475 -(1329 + 145) ;end if ((973 -(140 + 831))==v32) then v33.CFrame=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,1854 -(1409 + 441) , -15) ;if (v28.Humanoid.Health==0) then local v49=0;while true do if (v49==(718 -(15 + 703))) then v33.Size=Vector3.new(0,0,0);v28:Destroy();break;end end end break;end end end end end end);end end);spawn(function() while task.wait(0.5 + 0 ) do pcall(function() if _G.autocannon then local v23=0;local v24;local v25;local v26;while true do if (v23==(438 -(262 + 176))) then v24=game.Players.LocalPlayer;v25=v7("\235\47\46\142\187\23\188\234\47\44\140","\156\168\78\64\224\212\121");v23=1;end if (v23==(1723 -(345 + 1376))) then if v26 then local v38=0;local v39;while true do if (v38==0) then v39={[1]=CFrame.new(v24.Character.HumanoidRootPart.Position)};v26.RemoteEvent:FireServer(unpack(v39));break;end end end break;end if (v23==(689 -(198 + 490))) then if (v24.Backpack:FindFirstChild(v25) and  not v24.Character:FindFirstChild(v25)) then v24.Character.Humanoid:EquipTool(v24.Backpack[v25]);end v26=v24.Character:FindFirstChild(v25);v23=8 -6 ;end end end end);end end);local v9=game.Players.LocalPlayer;local v10=game:GetService(v7("\53\251\171\253\2\252\179\199\4\235","\174\103\142\197"));v10.Heartbeat:Connect(function() if (v9.Backpack:FindFirstChild(v7("\117\41\81\54\42\80\184\116\41\83\52","\152\54\72\63\88\69\62")) and  not v9.Character:FindFirstChild(v7("\247\197\224\82\219\202\174\126\213\200\226","\60\180\164\142"))) then v9.Character.Humanoid:EquipTool(v9.Backpack["Cannon Ball"]);end end);v10.Heartbeat:Connect(function() if _G.autocannon then for v21,v22 in pairs(workspace.Enemies:GetChildren()) do if v22:FindFirstChild(v7("\112\75\8\40\41\226\27\92\108\10\38\51\221\19\74\74","\114\56\62\101\73\71\141")) then local v29=0;local v30;while true do if (v29==(2 -1)) then v30.CFrame=v9.Character.HumanoidRootPart.CFrame * CFrame.new(1206 -(696 + 510) ,0 -0 , -(1272 -(1091 + 171))) ;if v9.Character:FindFirstChild(v7("\155\232\213\202\183\231\155\230\185\229\215","\164\216\137\187")) then local v47=0;local v48;while true do if (v47==0) then v48={[1 + 0 ]=v30.CFrame};v9.Character[v7("\241\231\63\188\169\240\75\240\231\61\190","\107\178\134\81\210\198\158")].RemoteEvent:FireServer(unpack(v48));break;end end end break;end if (v29==(0 -0)) then v30=v22.HumanoidRootPart;v30.Anchored=true;v29=3 -2 ;end end end end end end);
+-- Configuração global
+local LP = game.Players.LocalPlayer
+local RunService = game:GetService("RunService")
+
+-- Loop contínuo para manipulação de inimigos e uso de "Cannon Ball"
+RunService.Heartbeat:Connect(function()
+    if _G.autocannon then
+        for _, enemy in pairs(workspace.Enemies:GetChildren()) do
+            if enemy:FindFirstChild("HumanoidRootPart") and 
+               (string.find(enemy.Name, " Boar") or string.find(enemy.Name, "Crab") or 
+                string.find(enemy.Name, "Angry") or string.find(enemy.Name, "Bandit") or 
+                string.find(enemy.Name, "Thief") or string.find(enemy.Name, "Vokun") or 
+                string.find(enemy.Name, "Buster") or string.find(enemy.Name, "Freddy") or 
+                string.find(enemy.Name, "Bruno") or string.find(enemy.Name, "Thug") or 
+                string.find(enemy.Name, "Gunslinger") or string.find(enemy.Name, "Gunner") or 
+                string.find(enemy.Name, "Cave")) then
+
+                local rootPart = enemy.HumanoidRootPart
+                rootPart.CanCollide = false
+                rootPart.Size = Vector3.new(10, 10, 10)
+                rootPart.Anchored = true
+                rootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 4, -15)
+
+                if enemy.Humanoid.Health == 0 then
+                    rootPart.Size = Vector3.new(0, 0, 0)
+                    enemy:Destroy()
+                end
+            end
+        end
+
+        -- Equipar "Cannon Ball" se necessário
+        if LP.Backpack:FindFirstChild("Cannon Ball") and not LP.Character:FindFirstChild("Cannon Ball") then
+            LP.Character.Humanoid:EquipTool(LP.Backpack["Cannon Ball"])
+        end
+
+        -- Usar "Cannon Ball" nos inimigos
+        if LP.Character:FindFirstChild("Cannon Ball") then
+            local cannon = LP.Character["Cannon Ball"]
+            for _, enemy in pairs(workspace.Enemies:GetChildren()) do
+                if enemy:FindFirstChild("HumanoidRootPart") then
+                    local args = {
+                        [1] = enemy.HumanoidRootPart.CFrame
+                    }
+                    cannon.RemoteEvent:FireServer(unpack(args))
+                end
+            end
+        end
+    end
+end)
