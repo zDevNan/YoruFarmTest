@@ -1,6 +1,7 @@
 local LP = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
 
+-- Função para ativar/desativar o Haki
 local function ActivateHaki(state)
     pcall(function()
         local userId = LP.UserId
@@ -18,25 +19,34 @@ end)
 
 -- Loop que trata dos inimigos
 RunService.Heartbeat:Connect(function()
-    for _, v in pairs(workspace.Enemies:GetChildren()) do
-        if v:FindFirstChild("HumanoidRootPart") then
-            v.HumanoidRootPart.Anchored = true
-            v.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
+    pcall(function()
+        for _, enemy in pairs(workspace.Enemies:GetChildren()) do
+            if enemy:FindFirstChild("HumanoidRootPart") and enemy:FindFirstChild("Humanoid") then
+                local enemyHumanoid = enemy.Humanoid
+                local enemyRoot = enemy.HumanoidRootPart
 
-            -- Ativa o Haki antes de atacar
-            ActivateHaki(true)
+                -- Apenas interage com inimigos vivos
+                if enemyHumanoid.Health > 0 then
+                    -- Ativa o Haki antes de atacar
+                    ActivateHaki(true)
 
-            if LP.Character:FindFirstChild("Cannon Ball") then
-                local args = {
-                    [1] = v.HumanoidRootPart.CFrame
-                }
-                LP.Character["Cannon Ball"].RemoteEvent:FireServer(unpack(args))
-            end
+                    -- Move o inimigo para perto do jogador
+                    enemyRoot.Anchored = true
+                    enemyRoot.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
 
-            -- Verifica se o inimigo foi derrotado e desativa o Haki
-            if v.Humanoid.Health <= 0 then
-                ActivateHaki(false)
+                    -- Ataca o inimigo
+                    if LP.Character:FindFirstChild("Cannon Ball") then
+                        local cannonBall = LP.Character["Cannon Ball"]
+                        local args = {
+                            [1] = enemyRoot.CFrame
+                        }
+                        cannonBall.RemoteEvent:FireServer(unpack(args))
+                    end
+                else
+                    -- Caso o inimigo esteja morto, desativa o Haki
+                    ActivateHaki(false)
+                end
             end
         end
-    end
+    end)
 end)
