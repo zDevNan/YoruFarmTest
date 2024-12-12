@@ -1,14 +1,5 @@
--- Criação de Toggle para ativar/desativar a funcionalidade
-local ToggleFarm = FarmTab:CreateToggle({ 
-    Name = "Cannon Ball Mobs | All |",
-    CurrentValue = false,
-    Flag = "ToggleAutoBringMobs",
-    Callback = function(state)
-        _G.autocannon = state
-    end    
-})
+_G.autocannon = false
 
--- Função para ativar/desativar Haki
 function ActivateHaki(state)
     pcall(function()
         local userId = game.Players.LocalPlayer.UserId
@@ -17,11 +8,9 @@ function ActivateHaki(state)
     end)
 end
 
--- Configuração global
 local LP = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
 
--- Loop contínuo para manipulação de inimigos e uso de "Cannon Ball"
 RunService.Heartbeat:Connect(function()
     if _G.autocannon then
         for _, enemy in pairs(workspace.Enemies:GetChildren()) do
@@ -47,12 +36,10 @@ RunService.Heartbeat:Connect(function()
             end
         end
 
-        -- Equipar "Cannon Ball" se necessário
         if LP.Backpack:FindFirstChild("Cannon Ball") and not LP.Character:FindFirstChild("Cannon Ball") then
             LP.Character.Humanoid:EquipTool(LP.Backpack["Cannon Ball"])
         end
 
-        -- Usar "Cannon Ball" nos inimigos
         if LP.Character:FindFirstChild("Cannon Ball") then
             local cannon = LP.Character["Cannon Ball"]
             for _, enemy in pairs(workspace.Enemies:GetChildren()) do
