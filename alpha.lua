@@ -1,5 +1,6 @@
 local LP = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
+local TeleportService = game:GetService("TeleportService")
 
 -- Função para ativar/desativar o Haki
 local function ActivateHaki(state)
@@ -50,3 +51,23 @@ RunService.Heartbeat:Connect(function()
         end
     end)
 end)
+
+-- Anti-AFK
+LP.Idled:Connect(function()
+    game:GetService("VirtualUser"):CaptureController()
+    game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+end)
+
+-- Reconectar ao servidor
+local function Reconnect()
+    while true do
+        task.wait(5)
+        if not pcall(function()
+            local testConnection = game:GetService("Players").LocalPlayer
+        end) then
+            TeleportService:Teleport(game.PlaceId)
+        end
+    end
+end
+
+spawn(Reconnect)
