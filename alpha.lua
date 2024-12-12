@@ -19,37 +19,39 @@ RunService.Heartbeat:Connect(function()
 end)
 
 -- Loop que trata dos inimigos
-RunService.Heartbeat:Connect(function()
-    pcall(function()
-        for _, enemy in pairs(workspace.Enemies:GetChildren()) do
-            if enemy:FindFirstChild("HumanoidRootPart") and enemy:FindFirstChild("Humanoid") then
-                local enemyHumanoid = enemy.Humanoid
-                local enemyRoot = enemy.HumanoidRootPart
+spawn(function()
+    while task.wait(0.1) do
+        pcall(function()
+            for _, enemy in pairs(workspace.Enemies:GetChildren()) do
+                if enemy:FindFirstChild("HumanoidRootPart") and enemy:FindFirstChild("Humanoid") then
+                    local enemyHumanoid = enemy.Humanoid
+                    local enemyRoot = enemy.HumanoidRootPart
 
-                -- Apenas interage com inimigos vivos
-                if enemyHumanoid.Health > 0 then
-                    -- Ativa o Haki antes de atacar
-                    ActivateHaki(true)
+                    -- Apenas interage com inimigos vivos
+                    if enemyHumanoid.Health > 0 then
+                        -- Ativa o Haki antes de atacar
+                        ActivateHaki(true)
 
-                    -- Move o inimigo para perto do jogador
-                    enemyRoot.Anchored = true
-                    enemyRoot.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
+                        -- Move o inimigo para perto do jogador
+                        enemyRoot.Anchored = true
+                        enemyRoot.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
 
-                    -- Ataca o inimigo
-                    if LP.Character:FindFirstChild("Cannon Ball") then
-                        local cannonBall = LP.Character["Cannon Ball"]
-                        local args = {
-                            [1] = enemyRoot.CFrame
-                        }
-                        cannonBall.RemoteEvent:FireServer(unpack(args))
+                        -- Ataca o inimigo
+                        if LP.Character:FindFirstChild("Cannon Ball") then
+                            local cannonBall = LP.Character["Cannon Ball"]
+                            local args = {
+                                [1] = enemyRoot.CFrame
+                            }
+                            cannonBall.RemoteEvent:FireServer(unpack(args))
+                        end
+                    else
+                        -- Caso o inimigo esteja morto, desativa o Haki
+                        ActivateHaki(false)
                     end
-                else
-                    -- Caso o inimigo esteja morto, desativa o Haki
-                    ActivateHaki(false)
                 end
             end
-        end
-    end)
+        end)
+    end
 end)
 
 -- Anti-AFK
