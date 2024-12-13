@@ -18,9 +18,9 @@ RunService.Heartbeat:Connect(function()
     end
 end)
 
--- Loop que trata dos inimigos
+-- Loop que trata dos inimigos com atualização mais rápida
 spawn(function()
-    while task.wait(0.001) do
+    while task.wait(0.001) do -- Reduz o tempo de espera para atualização mais rápida
         pcall(function()
             for _, enemy in pairs(workspace.Enemies:GetChildren()) do
                 if enemy:FindFirstChild("HumanoidRootPart") and enemy:FindFirstChild("Humanoid") then
