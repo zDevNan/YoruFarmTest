@@ -10,7 +10,7 @@ end)
 
 -- Atacar apenas o jogador específico
 RunService.Heartbeat:Connect(function()
-    local targetPlayer = game.Players:FindFirstChild("@IIGamerUp")
+    local targetPlayer = game.Players:FindFirstChild("IIGamerUp")
     if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") and targetPlayer.Character:FindFirstChild("Humanoid") and targetPlayer.Character.Humanoid.Health > 0 then
         local targetRoot = targetPlayer.Character.HumanoidRootPart
 
