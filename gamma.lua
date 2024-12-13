@@ -9,8 +9,8 @@ RunService.Heartbeat:Connect(function()
     end
 end)
 
--- Atacar os jogadores específicos pelos IDs
-RunService.Heartbeat:Connect(function()
+-- Função para atacar os jogadores específicos
+local function attackTargets()
     for _, player in pairs(game.Players:GetPlayers()) do
         if table.find(targetIds, player.UserId) and player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health > 0 then
             local targetRoot = player.Character.HumanoidRootPart
@@ -29,4 +29,9 @@ RunService.Heartbeat:Connect(function()
             end
         end
     end
+end
+
+-- Atualizar continuamente os jogadores alvos e atacar
+RunService.Heartbeat:Connect(function()
+    attackTargets()
 end)
