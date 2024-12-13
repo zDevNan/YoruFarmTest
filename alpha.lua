@@ -20,7 +20,7 @@ end)
 
 -- Loop que trata dos inimigos
 spawn(function()
-    while task.wait(0.1) do
+    while task.wait(0.001) do
         pcall(function()
             for _, enemy in pairs(workspace.Enemies:GetChildren()) do
                 if enemy:FindFirstChild("HumanoidRootPart") and enemy:FindFirstChild("Humanoid") then
@@ -63,7 +63,7 @@ end)
 -- Reconectar ao servidor
 local function Reconnect()
     while true do
-        task.wait(5)
+        task.wait(1)
         if not pcall(function()
             local testConnection = game:GetService("Players").LocalPlayer
         end) then
