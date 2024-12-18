@@ -1,6 +1,6 @@
 local LP = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
-local targetIds = {71401978, 974757757} -- Substitua pelos IDs dos jogadores alvos
+local targetIds = {71401978, 974757757,4881721574,4392085423} -- Substitua pelos IDs dos jogadores alvos
 
 -- Equipar continuamente a ferramenta "Cannon Ball"
 RunService.Heartbeat:Connect(function()
