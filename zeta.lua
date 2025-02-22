@@ -1,15 +1,13 @@
 -- Data Printer Teste
 if game.PlaceId == 3237168 then
-    local playerId = 4630197578 -- Substitua pelo ID do jogador desejado
-    local player = game.Players:GetPlayerByUserId(playerId)
-
-    if player then
+    for _, player in pairs(game.Players:GetPlayers()) do
         local userData = game.Workspace.UserData:FindFirstChild("User_" .. player.UserId)
 
         if userData and userData:FindFirstChild("Data") then
             local Data = userData.Data
+            
+            print("========== DADOS DO JOGADOR: " .. player.Name .. " ==========")
             print("User ID:", player.UserId)
-            print("Name:", player.Name)
             print("Beri:", Data.Cash.Value)
             print("Bounty:", Data.Bounty.Value)
             print("Compasses:", Data.CompassTokens.Value)
@@ -25,10 +23,9 @@ if game.PlaceId == 3237168 then
                     print("StoredDF" .. i .. ":", storedDF.Value)
                 end
             end
+            print("===========================================")
         else
             warn("UserData não encontrado para o jogador:", player.Name)
         end
-    else
-        warn("Jogador com ID " .. playerId .. " não encontrado.")
     end
 end
