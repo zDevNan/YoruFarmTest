@@ -1,5 +1,5 @@
 _G.Cestus = true -- Define que o spam já inicia ativado
-local Speedss = 15 -- Define quantas vezes a animação será executada por ciclo
+local Speedss = 10 -- Define quantas vezes a animação será executada por ciclo
 
 while _G.Cestus do
     wait()
