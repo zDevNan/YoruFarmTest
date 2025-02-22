@@ -1,28 +1,21 @@
-_G.Cestus = true -- Define que o spam já inicia ativado
-local Speedss = 5 -- Define quantas vezes a animação será executada por ciclo
+_G.Cestus = true -- Ativar spam
+local Speedss = 5 -- Quantidade de execuções por ciclo
 
-while _G.Cestus do
-    wait()
+task.spawn(function()
+    while _G.Cestus do
+        task.wait()
 
-    local success, err = pcall(function()
-        local Players = game:GetService("Players")
-        local Plr = Players.LocalPlayer
-        local Character = Plr.Character
-        local Cestus = Character:FindFirstChild("Seastone Cestus")
+        local Plr = game:GetService("Players").LocalPlayer
+        if not Plr.Character then continue end
 
-        if Cestus then
-            local Environment
-            for _, conn in pairs(getconnections(Cestus["RequestAnimation"].OnClientEvent)) do
-                Environment = getsenv(Cestus["AnimationController"])
-            end
+        local Cestus = Plr.Character:FindFirstChild("Seastone Cestus")
+        if not Cestus then continue end
 
-            for _ = 1, Speedss do
-                Cestus["RequestAnimation"]:FireServer(Environment.PlaceId)
-            end
+        local Environment = getsenv(Cestus["AnimationController"])
+        if not Environment then continue end
+
+        for _ = 1, Speedss do
+            Cestus["RequestAnimation"]:FireServer(Environment.PlaceId)
         end
-    end)
-
-    if not success then
-        warn("Erro ao executar Seastone Cestus Spam:", err)
     end
-end
+end)
