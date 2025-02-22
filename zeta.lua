@@ -1,7 +1,7 @@
 --Data Printer teste
 if game.PlaceId == 3237168 then
 
-    local player = game.Players.NOMEPLAYER -- trocar pelo nome do player
+    local player = game.Players.Luffy107_99 -- trocar pelo nome do player
     local userData = game.Workspace.UserData:FindFirstChild("User_"..player.UserId)
     local Data = userData.Data
     print(player.userId)
