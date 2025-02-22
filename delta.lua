@@ -1,4 +1,4 @@
-local Speeds = 1000 -- Define o valor fixo da velocidade do Seastone Cestus
+local Speeds = 50 -- Define o valor fixo da velocidade do Seastone Cestus
 local ToggleActive = true -- Define que o spam já estará ativo ao iniciar
 
 -- Função para iniciar o spam
