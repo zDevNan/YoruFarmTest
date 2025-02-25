@@ -1,5 +1,5 @@
 while true do
-    wait(1) -- Delay para evitar sobrecarga
+    wait(1) -- Pequeno delay para evitar sobrecarga
 
     local plr = game.Players.LocalPlayer
     local backpack = plr.Backpack
@@ -15,7 +15,7 @@ while true do
         wait(3)
     end
 
-    -- Verifica quantos Compass existem na mochila
+    -- Função para contar quantos Compass estão na mochila
     local function countCompasses()
         local count = 0
         for _, item in pairs(backpack:GetChildren()) do
@@ -26,34 +26,45 @@ while true do
         return count
     end
 
-    local compassCount = countCompasses()
+    -- Se o jogador não tem Compass na mochila, tenta pegar 5 do chão
+    local function collectCompasses()
+        local needed = 5 - countCompasses() -- Calcula quantos Compass faltam
+        local collected = 0
 
-    -- Se ainda não tem 5 Compass, pega do chão
-    while compassCount < 5 do
-        if isTakingTooLong() then
-            resetData()
-            break
-        end
+        while collected < needed do
+            if isTakingTooLong() then
+                resetData()
+                return
+            end
 
-        wait(0.1)
-        for _, item in pairs(game.Workspace:GetChildren()) do
-            if item.Name == "Compass" and item:FindFirstChild("Handle") then
-                firetouchinterest(humanoidRootPart, item.Handle, 0)
-                firetouchinterest(humanoidRootPart, item.Handle, 1)
-                compassCount = countCompasses()
-                if compassCount >= 5 then break end
+            wait(0.1)
+            for _, item in pairs(game.Workspace:GetChildren()) do
+                if item.Name == "Compass" and item:FindFirstChild("Handle") then
+                    firetouchinterest(humanoidRootPart, item.Handle, 0)
+                    firetouchinterest(humanoidRootPart, item.Handle, 1)
+                    wait(0.5)
+                    collected = collected + 1
+                    if collected >= needed then
+                        break
+                    end
+                end
             end
         end
     end
 
+    -- Se o jogador não tem 5 Compass, coleta até ter exatamente 5
+    if countCompasses() < 5 then
+        collectCompasses()
+    end
+
     -- Agora que temos 5 Compass, usa eles
-    if compassCount >= 5 then
+    if countCompasses() == 5 then
         local oldPosition = humanoidRootPart.Position
 
         repeat
             if isTakingTooLong() then
                 resetData()
-                break
+                return
             end
 
             wait()
