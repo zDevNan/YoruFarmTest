@@ -5,7 +5,7 @@ while true do
     local backpack = plr:FindFirstChild("Backpack")
     local humanoidRootPart = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
 
-    -- Verifica quantos Compass existem na mochila
+    -- Função para contar quantos Compass o jogador tem na mochila
     local function countCompasses()
         local count = 0
         for _, item in ipairs(backpack:GetChildren()) do
@@ -39,14 +39,15 @@ while true do
             pcall(function()
                 local WeeklyQuest = workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId).Data:WaitForChild("QQ_Weekly3")
                 if WeeklyQuest.Value < 5 then
-                    local compass = backpack:FindFirstChild("Compass") or plr.Character:FindFirstChild("Compass")
+                    local compass = backpack:FindFirstChild("Compass")
                     if compass and compass:FindFirstChild("Value") then
                         plr.Character.Humanoid:UnequipTools()
                         compass.Parent = plr.Character
-                        humanoidRootPart.CFrame = CFrame.new(compass.Value.Value)
-                        compass:Activate()
-                        wait(0.5)
-                        humanoidRootPart.CFrame = CFrame.new(oldPosition)
+                        humanoidRootPart.CFrame = CFrame.new(compass.Value.Value) -- Teleporta para a fruta
+                        wait(0.2)
+                        compass:Activate() -- Usa o Compass corretamente
+                        wait(1) -- Pequena espera para evitar problemas
+                        humanoidRootPart.CFrame = CFrame.new(oldPosition) -- Volta para a posição inicial
                     end
                 end
             end)
