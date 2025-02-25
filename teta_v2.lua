@@ -1,83 +1,66 @@
-while true do
-    local plr = game.Players.LocalPlayer
-    local backpack = plr.Backpack
-    local humanoidRootPart = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
+local plr = game.Players.LocalPlayer
+local backpack = plr.Backpack
+local humanoidRootPart = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
 
-    local missionStartTime = tick() -- Marca o tempo de início da missão
-    local function isTakingTooLong()
-        return (tick() - missionStartTime) > 20 -- Se passar de 20s, reseta
-    end
+local function resetData()
+    workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId).Stats:FireServer()
+    task.wait(1) -- Pequena pausa para garantir que resetou
+    startFarming() -- Reinicia automaticamente
+end
 
-    local function resetData()
-        workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId).Stats:FireServer()
-        wait(2)
-    end
-
-    local function countCompasses()
-        local count = 0
-        for _, item in pairs(backpack:GetChildren()) do
-            if item.Name == "Compass" then
-                count = count + 1
-            end
+local function countCompasses()
+    local count = 0
+    for _, item in pairs(backpack:GetChildren()) do
+        if item.Name == "Compass" then
+            count = count + 1
         end
-        return count
     end
+    return count
+end
 
-    local function collectCompasses()
-        local needed = 5 - countCompasses()
-        if needed <= 0 then return end -- Já tem 5, não precisa pegar mais
-
-        local collected = 0
-        while collected < needed do
-            if isTakingTooLong() then
-                resetData()
-                return
-            end
-
-            for _, item in pairs(game.Workspace:GetChildren()) do
-                if item.Name == "Compass" and item:FindFirstChild("Handle") then
-                    firetouchinterest(humanoidRootPart, item.Handle, 0)
-                    firetouchinterest(humanoidRootPart, item.Handle, 1)
-                    collected = collected + 1
-                    if collected >= needed then
-                        return
-                    end
+local function collectCompasses()
+    while countCompasses() < 5 do
+        for _, item in pairs(game.Workspace:GetChildren()) do
+            if item.Name == "Compass" and item:FindFirstChild("Handle") then
+                firetouchinterest(humanoidRootPart, item.Handle, 0)
+                firetouchinterest(humanoidRootPart, item.Handle, 1)
+                
+                if countCompasses() >= 5 then
+                    break
                 end
             end
-            wait(0.1)
         end
+        task.wait(0.1)
     end
+end
 
-    -- Pega os Compass rapidamente
-    collectCompasses()
-
-    -- Se já tem 5 Compass, usa eles
+local function useCompasses()
     if countCompasses() == 5 then
-        local oldPosition = humanoidRootPart.Position
-
-        repeat
-            if isTakingTooLong() then
-                resetData()
-                return
-            end
-
-            local compass = backpack:FindFirstChild("Compass") or plr.Character:FindFirstChild("Compass")
-            if compass then
+        for _, compass in pairs(backpack:GetChildren()) do
+            if compass.Name == "Compass" then
                 plr.Character.Humanoid:UnequipTools()
                 compass.Parent = plr.Character
-                humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
                 compass:Activate()
-                wait(0.2) -- Reduzi o tempo de espera pra agilizar
-                humanoidRootPart.CFrame = CFrame.new(oldPosition)
+                task.wait(0.1)
             end
-        until workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId).Data:WaitForChild("QQ_Weekly3").Value == 5
+        end
     end
+end
 
-    -- Coleta a missão semanal e reinicia rapidamente
+local function startFarming()
+    collectCompasses() -- Pega os Compass (5 no máximo)
+    useCompasses() -- Usa os Compass se tiver 5
+
+    -- Coleta a missão semanal e reseta a data
     local WeeklyQuest = workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId).Data:WaitForChild("QQ_Weekly3")
     if WeeklyQuest.Value == 5 then
         workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId):WaitForChild("ChallengesRemote"):FireServer("Claim", "Weekly3")
-        wait(1)
-        resetData()
+        resetData() -- Reseta e reinicia automaticamente
+    else
+        task.wait(1)
+        startFarming() -- Continua farmando
     end
 end
+
+-- Inicia o script
+startFarming()
