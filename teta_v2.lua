@@ -20,11 +20,13 @@ end
 
 local function collectCompasses()
     while countCompasses() < 5 do
+        local collected = 0
         for _, item in pairs(game.Workspace:GetChildren()) do
-            if item.Name == "Compass" and item:FindFirstChild("Handle") then
+            if item.Name == "Compass" and item:FindFirstChild("Handle") and collected < 5 then
                 firetouchinterest(humanoidRootPart, item.Handle, 0)
                 firetouchinterest(humanoidRootPart, item.Handle, 1)
-                
+                collected = collected + 1
+
                 if countCompasses() >= 5 then
                     break
                 end
