@@ -1,6 +1,5 @@
-local TabCompassButtonToggle3
-
-local function GrabCompass()
+while true do
+    -- Pega Compass do chão
     local count = 0
     while count < 5 do
         wait(0.1)
@@ -12,67 +11,33 @@ local function GrabCompass()
             end
         end
     end
-end
 
-local function UseCompass()
-    local CompassCount = 0
-    for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-        if v.Name == "Compass" then
-            CompassCount = CompassCount + 1
-        end
-    end
-    
-    if CompassCount >= 5 then
-        local OldPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-        repeat
-            wait()
-            pcall(function()
-                if workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId).Data:WaitForChild("QQ_Weekly3").Value < 5 then
-                    local Compass = game.Players.LocalPlayer.Backpack:FindFirstChild("Compass") or game.Players.LocalPlayer.Character:FindFirstChild("Compass")
-                    if Compass then
-                        game.Players.LocalPlayer.Character.Humanoid:UnequipTools()
-                        Compass.Parent = game.Players.LocalPlayer.Character
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Compass.Poser.Value)
-                        Compass:Activate()
-                        wait(0.5)
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(OldPosition)
-                    end
+    -- Usa os Compass até completar a missão
+    local OldPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+    repeat
+        wait()
+        pcall(function()
+            if workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId).Data:WaitForChild("QQ_Weekly3").Value < 5 then
+                local Compass = game.Players.LocalPlayer.Backpack:FindFirstChild("Compass") or game.Players.LocalPlayer.Character:FindFirstChild("Compass")
+                if Compass then
+                    game.Players.LocalPlayer.Character.Humanoid:UnequipTools()
+                    Compass.Parent = game.Players.LocalPlayer.Character
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Compass.Poser.Value)
+                    Compass:Activate()
+                    wait(0.5)
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(OldPosition)
                 end
-            end)
-        until workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId).Data:WaitForChild("QQ_Weekly3").Value == 5
-    end
-end
+            end
+        end)
+    until workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId).Data:WaitForChild("QQ_Weekly3").Value == 5
 
-local function ClaimChallenge()
-    local args = {
-        [1] = "Claim",
-        [2] = "Weekly3"
-    }
-    workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("ChallengesRemote"):FireServer(unpack(args))
+    -- Coleta a missão
+    workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("ChallengesRemote"):FireServer("Claim", "Weekly3")
     wait(1)
     workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("Stats"):FireServer()
-end
 
-local function ResetPlayerData()
-    workspace:WaitForChild("UserData"):WaitForChild("User_"..game.Players.LocalPlayer.UserId):WaitForChild("UpdateClothing_Extras"):FireServer("A","\255",31)
-end
+    -- Reseta a data do jogador
+    workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("UpdateClothing_Extras"):FireServer("A", "\255", 31)
 
-local function AutoFarm()
-    while true do
-        GrabCompass()
-        UseCompass()
-        ClaimChallenge()
-        ResetPlayerData()
-        wait(2) -- Pequeno delay antes de repetir
-    end
+    wait(2) -- Pequeno delay antes de repetir
 end
-
-TabCompass:AddToggle({
-    Name = "Auto Farm Compass",
-    Default = false,
-    Callback = function(Value)
-        if Value then
-            spawn(AutoFarm)
-        end
-    end
-})
