@@ -36,8 +36,8 @@ while true do
     wait(1)
     workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("Stats"):FireServer()
 
-    -- Reseta a data do jogador
-    workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("UpdateClothing_Extras"):FireServer("A", "\255", 31)
+    -- Reseta a data do jogador (corrigido)
+    workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("ResetDataRemote"):FireServer()
 
     wait(2) -- Pequeno delay antes de repetir
 end
