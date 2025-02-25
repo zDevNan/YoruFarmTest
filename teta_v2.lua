@@ -5,22 +5,42 @@ while true do
     local backpack = plr.Backpack
     local humanoidRootPart = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
 
-    -- Verifica quantos Compass existem na mochila
-    local compassCount = 0
-    for _, item in pairs(backpack:GetChildren()) do
-        if item.Name == "Compass" then
-            compassCount = compassCount + 1
-        end
+    local missionStartTime = tick() -- Marca o tempo de início da missão
+    local function isTakingTooLong()
+        return (tick() - missionStartTime) > 30
     end
+
+    local function resetData()
+        workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId).Stats:FireServer()
+        wait(3)
+    end
+
+    -- Verifica quantos Compass existem na mochila
+    local function countCompasses()
+        local count = 0
+        for _, item in pairs(backpack:GetChildren()) do
+            if item.Name == "Compass" then
+                count = count + 1
+            end
+        end
+        return count
+    end
+
+    local compassCount = countCompasses()
 
     -- Se ainda não tem 5 Compass, pega do chão
     while compassCount < 5 do
+        if isTakingTooLong() then
+            resetData()
+            break
+        end
+
         wait(0.1)
         for _, item in pairs(game.Workspace:GetChildren()) do
             if item.Name == "Compass" and item:FindFirstChild("Handle") then
                 firetouchinterest(humanoidRootPart, item.Handle, 0)
                 firetouchinterest(humanoidRootPart, item.Handle, 1)
-                compassCount = compassCount + 1
+                compassCount = countCompasses()
                 if compassCount >= 5 then break end
             end
         end
@@ -31,6 +51,11 @@ while true do
         local oldPosition = humanoidRootPart.Position
 
         repeat
+            if isTakingTooLong() then
+                resetData()
+                break
+            end
+
             wait()
             pcall(function()
                 local WeeklyQuest = workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId).Data:WaitForChild("QQ_Weekly3")
@@ -56,9 +81,6 @@ while true do
         wait(1)
 
         -- Reset Data corretamente
-        local userData = workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId)
-        if userData and userData:FindFirstChild("Stats") then
-            userData.Stats:FireServer()
-        end
+        resetData()
     end
 end
