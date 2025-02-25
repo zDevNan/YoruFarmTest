@@ -1,18 +1,79 @@
-local function CheckAndReset()
-    while true do
-        if workspace.UserData["User_" .. game.Players.LocalPlayer.UserId].Data.QQ_Weekly3.Value >= 5 then
-            workspace.UserData["User_" .. game.Players.LocalPlayer.UserId].UpdateClothing_Extras:FireServer("A", "\255", 31)
+local TabCompassButtonToggle3
+
+local function GrabCompass()
+    local count = 0
+    while count < 5 do
+        wait(0.1)
+        for _, Item in pairs(game.Workspace:GetChildren()) do
+            if Item.Name == "Compass" and Item:FindFirstChild("Handle") then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, Item.Handle, 0)
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, Item.Handle, 1)
+                count = count + 1
+                if count >= 5 then break end
+            end
         end
-        wait(1) -- Verifica a cada 1 segundo
+    end
+end
+
+local function UseCompass()
+    local CompassCount = 0
+    for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+        if v.Name == "Compass" then
+            CompassCount = CompassCount + 1
+        end
+    end
+    
+    if CompassCount >= 5 then
+        local OldPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        repeat
+            wait()
+            pcall(function()
+                if workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId).Data:WaitForChild("QQ_Weekly3").Value < 5 then
+                    local Compass = game.Players.LocalPlayer.Backpack:FindFirstChild("Compass") or game.Players.LocalPlayer.Character:FindFirstChild("Compass")
+                    if Compass then
+                        game.Players.LocalPlayer.Character.Humanoid:UnequipTools()
+                        Compass.Parent = game.Players.LocalPlayer.Character
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Compass.Poser.Value)
+                        Compass:Activate()
+                        wait(0.5)
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(OldPosition)
+                    end
+                end
+            end)
+        until workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId).Data:WaitForChild("QQ_Weekly3").Value == 5
+    end
+end
+
+local function ClaimChallenge()
+    local args = {
+        [1] = "Claim",
+        [2] = "Weekly3"
+    }
+    workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("ChallengesRemote"):FireServer(unpack(args))
+    wait(1)
+    workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("Stats"):FireServer()
+end
+
+local function ResetPlayerData()
+    workspace:WaitForChild("UserData"):WaitForChild("User_"..game.Players.LocalPlayer.UserId):WaitForChild("UpdateClothing_Extras"):FireServer("A","\255",31)
+end
+
+local function AutoFarm()
+    while true do
+        GrabCompass()
+        UseCompass()
+        ClaimChallenge()
+        ResetPlayerData()
+        wait(2) -- Pequeno delay antes de repetir
     end
 end
 
 TabCompass:AddToggle({
-    Name = "Auto Reset on Mission Complete",
+    Name = "Auto Farm Compass",
     Default = false,
     Callback = function(Value)
         if Value then
-            spawn(CheckAndReset)
+            spawn(AutoFarm)
         end
     end
 })
