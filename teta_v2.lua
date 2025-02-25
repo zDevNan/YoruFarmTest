@@ -1,5 +1,5 @@
 while true do
-    -- Pega Compass do chão
+    -- Pega 5 Compass do chão
     local count = 0
     while count < 5 do
         wait(0.1)
@@ -12,31 +12,36 @@ while true do
         end
     end
 
-    -- Usa os Compass até completar a missão
+    -- Salva a posição original do jogador
     local OldPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+    local CompassCount = 0
+
     repeat
         wait()
         pcall(function()
-            if workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId).Data:WaitForChild("QQ_Weekly3").Value < 5 then
+            local WeeklyQuest = workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId).Data:WaitForChild("QQ_Weekly3")
+            if WeeklyQuest.Value < 5 then
                 local Compass = game.Players.LocalPlayer.Backpack:FindFirstChild("Compass") or game.Players.LocalPlayer.Character:FindFirstChild("Compass")
                 if Compass then
                     game.Players.LocalPlayer.Character.Humanoid:UnequipTools()
                     Compass.Parent = game.Players.LocalPlayer.Character
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Compass.Poser.Value)
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Compass.Poser.Value) -- Vai até o CFrame correto do Compass
                     Compass:Activate()
+                    CompassCount = CompassCount + 1
                     wait(0.5)
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(OldPosition)
                 end
             end
         end)
-    until workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId).Data:WaitForChild("QQ_Weekly3").Value == 5
+    until CompassCount >= 5
+
+    -- Retorna o jogador para a posição original
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(OldPosition)
 
     -- Coleta a missão
     workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("ChallengesRemote"):FireServer("Claim", "Weekly3")
     wait(1)
-    workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("Stats"):FireServer()
 
-    -- Reseta a data do jogador (corrigido)
+    -- Reseta a data do jogador
     workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("ResetDataRemote"):FireServer()
 
     wait(2) -- Pequeno delay antes de repetir
