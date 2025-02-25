@@ -3,13 +3,14 @@ while true do
     local backpack = plr.Backpack
     local humanoidRootPart = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
 
-    local missionStartTime = tick() -- Tempo de início
+    local missionStartTime = tick() -- Marca o tempo de início da missão
     local function isTakingTooLong()
-        return (tick() - missionStartTime) > 15 -- Se passar de 15s, reseta
+        return (tick() - missionStartTime) > 20 -- Se passar de 20s, reseta
     end
 
     local function resetData()
         workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId).Stats:FireServer()
+        wait(2)
     end
 
     local function countCompasses()
@@ -24,7 +25,7 @@ while true do
 
     local function collectCompasses()
         local needed = 5 - countCompasses()
-        if needed <= 0 then return end
+        if needed <= 0 then return end -- Já tem 5, não precisa pegar mais
 
         local collected = 0
         while collected < needed do
@@ -43,7 +44,7 @@ while true do
                     end
                 end
             end
-            task.wait(0.05) -- Espera mínima para evitar lag
+            wait(0.1)
         end
     end
 
@@ -52,6 +53,8 @@ while true do
 
     -- Se já tem 5 Compass, usa eles
     if countCompasses() == 5 then
+        local oldPosition = humanoidRootPart.Position
+
         repeat
             if isTakingTooLong() then
                 resetData()
@@ -62,16 +65,19 @@ while true do
             if compass then
                 plr.Character.Humanoid:UnequipTools()
                 compass.Parent = plr.Character
+                humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
                 compass:Activate()
-                task.wait(0.1) -- Pequena pausa para garantir que ativa corretamente
+                wait(0.2) -- Reduzi o tempo de espera pra agilizar
+                humanoidRootPart.CFrame = CFrame.new(oldPosition)
             end
         until workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId).Data:WaitForChild("QQ_Weekly3").Value == 5
     end
 
-    -- Coleta a missão semanal e reseta a data
+    -- Coleta a missão semanal e reinicia rapidamente
     local WeeklyQuest = workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId).Data:WaitForChild("QQ_Weekly3")
     if WeeklyQuest.Value == 5 then
         workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId):WaitForChild("ChallengesRemote"):FireServer("Claim", "Weekly3")
-        resetData() -- Reinicia imediatamente sem esperar
+        wait(1)
+        resetData()
     end
 end
