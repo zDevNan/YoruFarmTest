@@ -1,15 +1,11 @@
 local TabCompassButtonToggle3
 
 local function GrabCompass()
-    local count = 0
-    while count < 5 do
+    while true do
         wait(0.1)
         for _, Item in pairs(game.Workspace:GetChildren()) do
             if Item.Name == "Compass" and Item:FindFirstChild("Handle") then
-                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, Item.Handle, 0)
-                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, Item.Handle, 1)
-                count = count + 1
-                if count >= 5 then break end
+                Item.Handle.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
             end
         end
     end
@@ -52,6 +48,7 @@ local function ClaimChallenge()
     workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("ChallengesRemote"):FireServer(unpack(args))
     wait(1)
     workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("Stats"):FireServer()
+    ResetPlayerData()
 end
 
 local function ResetPlayerData()
@@ -63,7 +60,6 @@ local function AutoFarm()
         GrabCompass()
         UseCompass()
         ClaimChallenge()
-        ResetPlayerData()
         wait(2) -- Pequeno delay antes de repetir
     end
 end
