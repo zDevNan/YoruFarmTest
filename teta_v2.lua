@@ -25,7 +25,7 @@ while true do
                 if Compass then
                     game.Players.LocalPlayer.Character.Humanoid:UnequipTools()
                     Compass.Parent = game.Players.LocalPlayer.Character
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Compass.Poser.Value) -- Vai até o CFrame correto do Compass
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Compass.Poser.Value) -- Vai até o CFrame do Compass
                     Compass:Activate()
                     CompassCount = CompassCount + 1
                     wait(0.5)
@@ -42,7 +42,7 @@ while true do
     wait(1)
 
     -- Reseta a data do jogador
-    workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("ResetDataRemote"):FireServer()
+    workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId):WaitForChild("UpdateClothing_Extras"):FireServer("A","\255",31)
 
     wait(2) -- Pequeno delay antes de repetir
 end
