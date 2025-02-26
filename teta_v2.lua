@@ -28,20 +28,14 @@ while true do
         local needed = 5 - countCompasses()
         if needed <= 0 then return end
 
-        -- Armazena Compass do Workspace em uma tabela
-        local compasses = {}
-        for _, item in pairs(game.Workspace:GetDescendants()) do
-            if item.Name == "Compass" and item:FindFirstChild("Handle") then
-                table.insert(compasses, item)
-            end
-        end
-
-        for _, compass in pairs(compasses) do
+        for _, item in pairs(game.Workspace:GetChildren()) do
             if needed <= 0 then break end
-            firetouchinterest(humanoidRootPart, compass.Handle, 0) -- Inicia o toque
-            firetouchinterest(humanoidRootPart, compass.Handle, 1) -- Finaliza o toque
-            task.wait(0.2) -- Pequeno delay para garantir que o Compass seja coletado
-            needed = needed - 1
+            if item.Name == "Compass" and item:FindFirstChild("Handle") then
+                firetouchinterest(humanoidRootPart, item.Handle, 0)
+                firetouchinterest(humanoidRootPart, item.Handle, 1)
+                task.wait(0.2)
+                needed = needed - 1
+            end
         end
     end
 
@@ -63,9 +57,9 @@ while true do
             task.wait()
             pcall(function()
                 local compass = backpack:FindFirstChild("Compass") or character:FindFirstChild("Compass")
-                if compass then
-                    plr.Character.Humanoid:UnequipTools()
-                    compass.Parent = plr.Character
+                if compass and compass:FindFirstChild("Poser") then
+                    character.Humanoid:UnequipTools()
+                    compass.Parent = character
                     humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
                     compass:Activate()
                     task.wait(0.5)
@@ -79,4 +73,7 @@ while true do
     local WeeklyQuest = workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId).Data:WaitForChild("QQ_Weekly3")
     if WeeklyQuest.Value == 5 then
         print("Missão semanal completa. Coletando recompensa...")
-        workspace:WaitForChild
+        workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId):WaitForChild("ChallengesRemote"):FireServer("Claim", "Weekly3")
+        task.wait(1)
+    end
+end
