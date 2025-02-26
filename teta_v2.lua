@@ -86,24 +86,26 @@ while true do
     end
 
     -- Coleta a recompensa da missão
-    local WeeklyQuest = workspace:FindFirstChild("UserData") and workspace.UserData:FindFirstChild("User_" .. plr.UserId)
-    if WeeklyQuest and WeeklyQuest.Data:FindFirstChild("QQ_Weekly3") and WeeklyQuest.Data.QQ_Weekly3.Value == 5 then
+    local userData = workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId)
+    local WeeklyQuest = userData.Data:WaitForChild("QQ_Weekly3")
+
+    if WeeklyQuest.Value == 5 then
         print("[✅] Missão semanal completa. Coletando recompensa...")
-        local challengesRemote = WeeklyQuest:FindFirstChild("ChallengesRemote")
+        local challengesRemote = userData:FindFirstChild("ChallengesRemote")
         if challengesRemote then
             challengesRemote:FireServer("Claim", "Weekly3")
         end
         task.wait(1)
 
-        -- 🔄 **Força o reset dos dados da missão**
-        local resetData = userData and userData.Data:FindFirstChild("ResetData")
-        if resetData then
-            print("[♻] Resetando dados da missão...")
-            resetData:FireServer() -- Reseta a missão para permitir repetir
-            task.wait(1)
-            print("[✔] Reset concluído!")
+        -- **Executa o verdadeiro reset da data**
+        print("[♻] Resetando dados da missão...")
+        local stats = userData:FindFirstChild("Stats")
+        if stats then
+            stats:FireServer() -- Comando correto para resetar
+            task.wait(2) -- Aguarda para garantir que o reset foi feito
+            print("[✔] Reset concluído! Missão pode ser refeita.")
         else
-            warn("[⚠] Erro: ResetData não encontrado! Não foi possível resetar a missão.")
+            warn("[⚠] Erro: Stats não encontrado! Não foi possível resetar a missão.")
         end
     end
 end
