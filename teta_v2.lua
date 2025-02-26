@@ -2,7 +2,8 @@
     Este script automatiza a coleta e uso de Compass para completar a missão semanal no jogo.
     Ele verifica se o jogador possui 5 Compass na mochila, caso contrário, coleta do chão.
     Após obter 5 Compass, ele os utiliza corretamente para completar a missão e, em seguida, coleta a recompensa.
-    Caso o processo demore muito, ele faz um reset para evitar falhas.
+    Ao finalizar, ele reseta os dados da missão para que possa ser refeita sem erro.
+    Caso o processo demore muito, ele faz um reset no personagem para evitar falhas.
 ]]--
 
 while true do
@@ -94,5 +95,12 @@ while true do
             challengesRemote:FireServer("Claim", "Weekly3")
         end
         task.wait(1)
+
+        -- 🔄 **Resetando os dados da missão após completar**
+        local resetData = userData and userData.Data:FindFirstChild("ResetData")
+        if resetData then
+            print("Resetando dados da missão...")
+            resetData:FireServer() -- Reseta os dados da missão
+        end
     end
 end
