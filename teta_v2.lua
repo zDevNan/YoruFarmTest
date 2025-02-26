@@ -38,16 +38,19 @@ while true do
 
         for _, compass in pairs(compasses) do
             if needed <= 0 then break end
-            firetouchinterest(humanoidRootPart, compass.Handle, 0)
-            firetouchinterest(humanoidRootPart, compass.Handle, 1)
-            task.wait(0.1) -- Pequeno delay para evitar sobrecarga
+            firetouchinterest(humanoidRootPart, compass.Handle, 0) -- Inicia o toque
+            firetouchinterest(humanoidRootPart, compass.Handle, 1) -- Finaliza o toque
+            task.wait(0.2) -- Pequeno delay para garantir que o Compass seja coletado
             needed = needed - 1
         end
     end
 
     -- Coleta Compass se necessário
     if countCompasses() < 5 then
+        print("Coletando Compass...")
         collectCompasses()
+    else
+        print("Já tem 5 Compass na mochila.")
     end
 
     -- Usa os Compass para completar a missão
@@ -75,13 +78,5 @@ while true do
     -- Coleta a recompensa da missão
     local WeeklyQuest = workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId).Data:WaitForChild("QQ_Weekly3")
     if WeeklyQuest.Value == 5 then
-        workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId):WaitForChild("ChallengesRemote"):FireServer("Claim", "Weekly3")
-        task.wait(1)
-
-        -- Reseta os dados
-        local userData = workspace:WaitForChild("UserData"):WaitForChild("User_" .. plr.UserId)
-        if userData:FindFirstChild("Stats") then
-            userData.Stats:FireServer()
-        end
-    end
-end
+        print("Missão semanal completa. Coletando recompensa...")
+        workspace:WaitForChild
