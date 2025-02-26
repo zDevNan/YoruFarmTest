@@ -1,10 +1,3 @@
---[[ 
-    Este script automatiza o processo de coleta e uso de Compass para completar a missão semanal no jogo.
-    Ele verifica se o jogador possui 5 Compass na mochila, caso contrário, coleta do chão.
-    Após obter 5 Compass, ele os utiliza corretamente para completar a missão e, em seguida, reseta os dados.
-    Caso o processo demore muito, ele faz um reset para evitar falhas.
-]]--
-
 while true do
     task.wait(1) -- Delay inicial para evitar sobrecarga
 
@@ -66,12 +59,22 @@ while true do
         while WeeklyQuest.Value < 5 do
             local compass = backpack:FindFirstChild("Compass") or character:FindFirstChild("Compass")
             if compass then
+                -- Equipa o Compass
                 plr.Character.Humanoid:UnequipTools()
                 compass.Parent = plr.Character
-                humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
-                compass:Activate()
-                task.wait(0.5)
+
+                -- Move o jogador até o CFrame do Compass
+                local targetPosition = compass.Poser.Value
+                if typeof(targetPosition) == "Vector3" then
+                    humanoidRootPart.CFrame = CFrame.new(targetPosition)
+                    task.wait(0.5) -- Pequeno delay para garantir que o jogador chegou ao local
+                    compass:Activate() -- Ativa o Compass
+                    task.wait(0.5) -- Delay para garantir que a ação seja concluída
+                end
+
+                -- Retorna o jogador à posição original
                 humanoidRootPart.CFrame = CFrame.new(oldPosition)
+                task.wait(0.5) -- Pequeno delay antes de repetir
             end
             task.wait(0.1) -- Pequeno delay para evitar sobrecarga
         end
