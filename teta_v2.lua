@@ -1,9 +1,8 @@
 --[[  
-    Este script automatiza a coleta e uso de Compass para completar a missão semanal no jogo.
-    Ele verifica se o jogador possui 5 Compass na mochila, caso contrário, coleta do chão.
-    Após obter 5 Compass, ele os utiliza corretamente para completar a missão e, em seguida, coleta a recompensa.
-    Ao finalizar, ele reseta os dados da missão para que possa ser refeita sem erro.
-    Caso o processo demore muito, ele faz um reset no personagem para evitar falhas.
+    Este script coleta e usa Compass para completar a missão semanal no jogo.
+    Após obter 5 Compass, ele os utiliza para finalizar a missão e coletar a recompensa.
+    No final, ele **força** o reset dos dados da missão para que possa ser refeita sem erros.
+    Se o processo travar por muito tempo, o personagem é resetado para evitar falhas.
 ]]--
 
 while true do
@@ -15,7 +14,7 @@ while true do
     local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
 
     if not humanoidRootPart or not backpack then
-        warn("Erro: HumanoidRootPart ou Backpack não encontrado!")
+        warn("[⚠] Erro: HumanoidRootPart ou Backpack não encontrado!")
         task.wait(1)
         continue
     end
@@ -59,7 +58,7 @@ while true do
         local WeeklyQuest = userData and userData.Data:FindFirstChild("QQ_Weekly3")
 
         if not WeeklyQuest then
-            warn("Erro: Missão semanal não encontrada!")
+            warn("[⚠] Erro: Missão semanal não encontrada!")
             task.wait(1)
             continue
         end
@@ -68,7 +67,7 @@ while true do
 
         while WeeklyQuest.Value < 5 do
             if tick() - startTime > 30 then
-                warn("Erro: Tempo limite atingido! Resetando personagem...")
+                warn("[⚠] Tempo limite atingido! Resetando personagem...")
                 plr.Character:BreakJoints()
                 break
             end
@@ -89,18 +88,22 @@ while true do
     -- Coleta a recompensa da missão
     local WeeklyQuest = workspace:FindFirstChild("UserData") and workspace.UserData:FindFirstChild("User_" .. plr.UserId)
     if WeeklyQuest and WeeklyQuest.Data:FindFirstChild("QQ_Weekly3") and WeeklyQuest.Data.QQ_Weekly3.Value == 5 then
-        print("Missão semanal completa. Coletando recompensa...")
+        print("[✅] Missão semanal completa. Coletando recompensa...")
         local challengesRemote = WeeklyQuest:FindFirstChild("ChallengesRemote")
         if challengesRemote then
             challengesRemote:FireServer("Claim", "Weekly3")
         end
         task.wait(1)
 
-        -- 🔄 **Resetando os dados da missão após completar**
+        -- 🔄 **Força o reset dos dados da missão**
         local resetData = userData and userData.Data:FindFirstChild("ResetData")
         if resetData then
-            print("Resetando dados da missão...")
-            resetData:FireServer() -- Reseta os dados da missão
+            print("[♻] Resetando dados da missão...")
+            resetData:FireServer() -- Reseta a missão para permitir repetir
+            task.wait(1)
+            print("[✔] Reset concluído!")
+        else
+            warn("[⚠] Erro: ResetData não encontrado! Não foi possível resetar a missão.")
         end
     end
 end
