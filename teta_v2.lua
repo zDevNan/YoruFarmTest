@@ -73,21 +73,25 @@ end
 while true do
     task.wait(1) -- Delay inicial para evitar sobrecarga
 
-    -- Coleta Compass se necessário
+    -- Verifica se o jogador tem menos de 5 Compass na mochila
     if countCompasses() < 5 then
+        print("Coletando Compass...")
         collectCompasses()
+    else
+        print("Já tem 5 Compass na mochila.")
     end
 
     -- Verifica se a missão foi completada
     local userData = workspace:WaitForChild("UserData"):WaitForChild("User_" .. game.Players.LocalPlayer.UserId)
     local WeeklyQuest = userData.Data:WaitForChild("QQ_Weekly3")
     if WeeklyQuest.Value == 5 then
-        -- Coleta a recompensa da missão
+        print("Missão semanal completa. Coletando recompensa...")
         userData:WaitForChild("ChallengesRemote"):FireServer("Claim", "Weekly3")
         task.wait(1)
 
         -- Reseta os dados
         resetData()
+        print("Dados resetados.")
         task.wait(3) -- Delay para garantir que os dados sejam resetados
     end
 end
