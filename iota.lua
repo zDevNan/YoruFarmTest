@@ -1,5 +1,5 @@
 while true do
-    task.wait(0.001) -- Loop rápido sem travar o celular
+    task.wait(0.001) -- Loop rápido para teleportar rapidamente
 
     local plr = game.Players.LocalPlayer
     local backpack = plr:FindFirstChild("Backpack")
@@ -20,13 +20,7 @@ while true do
         compass.Parent = character
         humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
         compass:Activate()
-
-        -- Guarda a referência da Compass usada
-        local compassUsada = compass
-
-        -- Espera até que essa Compass desapareça do personagem e da mochila
-        repeat
-            task.wait(0.05)
-        until not character:FindFirstChild(compassUsada.Name) and not backpack:FindFirstChild(compassUsada.Name) and compassUsada.Parent ~= character and compassUsada.Parent ~= backpack
+        
+        task.wait(0.3) -- Pequeno delay antes de ir para outro Compass
     end
 end
