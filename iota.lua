@@ -1,47 +1,24 @@
--- Lista de caixas que devem ser verificadas antes de pegar outro Compass
-local caixasValidas = {
-    ["Rare Box"] = true,
-    ["Ultra Rare Box"] = true,
-    ["Uncommon Box"] = true,
-    ["Common Box"] = true
-}
-
 while true do
-    task.wait(0.001) -- Pequena pausa para evitar sobrecarga
+    task.wait() -- Usa o menor delay possível sem travar o jogo
 
     local plr = game.Players.LocalPlayer
-    local backpack = plr:FindFirstChild("Backpack")
-    local character = plr.Character
+    local backpack = plr and plr:FindFirstChild("Backpack")
+    local character = plr and plr.Character
     local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 
     if not humanoidRootPart or not backpack or not humanoid then
-        warn("[⚠] Erro: HumanoidRootPart, Backpack ou Humanoid não encontrado!")
-        task.wait(0.01)
-        continue
+        continue -- Se algo estiver errado, pula para a próxima iteração
     end
 
-    -- Encontra um Compass no inventário
+    -- Pega a primeira Compass disponível
     local compass = backpack:FindFirstChild("Compass")
     if compass and compass:FindFirstChild("Poser") then
         humanoid:UnequipTools()
         compass.Parent = character
-        humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
+        humanoidRootPart.CFrame = compass.Poser.Value -- Evita criar um novo CFrame desnecessariamente
         compass:Activate()
 
-        -- Espera até que o Compass seja substituído por uma caixa antes de pegar outro Compass
-        local itemColetado = false
-        while not itemColetado do
-            task.wait(0.36) -- Pequeno delay para evitar sobrecarga
-
-            -- Verifica se o Compass sumiu e foi substituído por uma das caixas válidas
-            local novoItem = backpack:GetChildren()
-            for _, item in ipairs(novoItem) do
-                if caixasValidas[item.Name] then
-                    itemColetado = true
-                    break
-                end
-            end
-        end
+        task.wait(0.25) -- Delay reduzido para garantir eficiência
     end
 end
