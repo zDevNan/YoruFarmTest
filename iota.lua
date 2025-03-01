@@ -21,7 +21,7 @@ while true do
             compass.Parent = character
             humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
             compass:Activate()
-            task.wait(0.35) -- Tempo para garantir a ativação
+            task.wait(0.32) -- Tempo para garantir a ativação
         end
     end
     
