@@ -8,7 +8,7 @@ while true do
     
     if not humanoidRootPart or not backpack then
         warn("[⚠] Erro: HumanoidRootPart ou Backpack não encontrado!")
-        task.wait(1)
+        task.wait(0.2)
         continue
     end
     
@@ -21,7 +21,7 @@ while true do
             compass.Parent = character
             humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
             compass:Activate()
-            task.wait(0.3) -- Tempo para garantir a ativação
+            task.wait(0.35) -- Tempo para garantir a ativação
         end
     end
     
