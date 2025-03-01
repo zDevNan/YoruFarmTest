@@ -3,7 +3,7 @@ local caixasValidas = {
     ["Rare Box"] = true,
     ["Ultra Rare Box"] = true,
     ["Uncommon Box"] = true,
-    ["Common Box"] = true -- Corrigi a escrita de "Common"
+    ["Common Box"] = true
 }
 
 while true do
@@ -29,16 +29,19 @@ while true do
         humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
         compass:Activate()
 
-        -- Aguarda até que um item válido apareça no Backpack antes de seguir para outro Compass
+        -- Espera até que o Compass seja substituído por uma caixa antes de pegar outro Compass
         local itemColetado = false
-        repeat
-            task.wait(0.1) -- Pequeno delay para verificar
-            for _, item in pairs(backpack:GetChildren()) do
+        while not itemColetado do
+            task.wait(0.1) -- Pequeno delay para evitar sobrecarga
+
+            -- Verifica se o Compass sumiu e foi substituído por uma das caixas válidas
+            local novoItem = backpack:GetChildren()
+            for _, item in ipairs(novoItem) do
                 if caixasValidas[item.Name] then
                     itemColetado = true
                     break
                 end
             end
-        until itemColetado
+        end
     end
 end
