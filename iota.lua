@@ -32,7 +32,7 @@ while true do
         -- Espera até que o Compass seja substituído por uma caixa antes de pegar outro Compass
         local itemColetado = false
         while not itemColetado do
-            task.wait(0.1) -- Pequeno delay para evitar sobrecarga
+            task.wait(0.36) -- Pequeno delay para evitar sobrecarga
 
             -- Verifica se o Compass sumiu e foi substituído por uma das caixas válidas
             local novoItem = backpack:GetChildren()
