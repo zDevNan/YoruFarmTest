@@ -1,5 +1,13 @@
+-- Lista de caixas que devem ser verificadas antes de pegar outro Compass
+local caixasValidas = {
+    ["Rare Box"] = true,
+    ["Ultra Rare Box"] = true,
+    ["Uncommon Box"] = true,
+    ["Common Box"] = true -- Corrigi a escrita de "Common"
+}
+
 while true do
-    task.wait(0.001) -- Loop rápido para teleportar rapidamente
+    task.wait(0.001) -- Pequena pausa para evitar sobrecarga
 
     local plr = game.Players.LocalPlayer
     local backpack = plr:FindFirstChild("Backpack")
@@ -13,14 +21,24 @@ while true do
         continue
     end
 
-    -- Pega a primeira Compass disponível
+    -- Encontra um Compass no inventário
     local compass = backpack:FindFirstChild("Compass")
     if compass and compass:FindFirstChild("Poser") then
         humanoid:UnequipTools()
         compass.Parent = character
         humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
         compass:Activate()
-        
-        task.wait(0.35) -- Pequeno delay antes de ir para outro Compass
+
+        -- Aguarda até que um item válido apareça no Backpack antes de seguir para outro Compass
+        local itemColetado = false
+        repeat
+            task.wait(0.1) -- Pequeno delay para verificar
+            for _, item in pairs(backpack:GetChildren()) do
+                if caixasValidas[item.Name] then
+                    itemColetado = true
+                    break
+                end
+            end
+        until itemColetado
     end
 end
