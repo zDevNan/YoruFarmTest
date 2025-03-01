@@ -21,12 +21,12 @@ while true do
         humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
         compass:Activate()
 
-        -- Guarda o nome da Compass que foi usada
-        local compassNome = compass.Name
+        -- Guarda a referência da Compass usada
+        local compassUsada = compass
 
-        -- Espera até que essa Compass desapareça do personagem e do inventário
+        -- Espera até que essa Compass desapareça do personagem e da mochila
         repeat
             task.wait(0.05)
-        until not character:FindFirstChild(compassNome) and not backpack:FindFirstChild(compassNome)
+        until not character:FindFirstChild(compassUsada.Name) and not backpack:FindFirstChild(compassUsada.Name) and compassUsada.Parent ~= character and compassUsada.Parent ~= backpack
     end
 end
