@@ -21,17 +21,13 @@ while true do
         humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
         compass:Activate()
 
-        -- Aguarda até que um item com "Box" no nome esteja na mão
-        local toolEquipped
-        repeat
-            task.wait(0.05)
-            toolEquipped = character:FindFirstChildOfClass("Tool")
-        until toolEquipped and string.match(toolEquipped.Name, "Box$")
+        -- Captura o item atual na mão
+        local itemAtual = character:FindFirstChildOfClass("Tool")
 
-        -- Aguarda até que o item "Box" seja removido antes de pegar outra Compass
+        -- Espera até que o item na mão seja trocado ou removido
         repeat
             task.wait(0.05)
-            toolEquipped = character:FindFirstChildOfClass("Tool")
-        until not toolEquipped or not string.match(toolEquipped.Name, "Box$")
+            local novoItem = character:FindFirstChildOfClass("Tool")
+        until not novoItem or novoItem ~= itemAtual
     end
 end
