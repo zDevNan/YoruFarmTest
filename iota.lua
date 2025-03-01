@@ -1,5 +1,5 @@
 while true do
-    task.wait(0.05) -- Reduzido para maior velocidade sem sobrecarga
+    task.wait(0.001) -- Reduzido para maior velocidade sem sobrecarga
 
     local plr = game.Players.LocalPlayer
     local backpack = plr:FindFirstChild("Backpack")
@@ -9,7 +9,7 @@ while true do
 
     if not humanoidRootPart or not backpack or not humanoid then
         warn("[⚠] Erro: HumanoidRootPart, Backpack ou Humanoid não encontrado!")
-        task.wait(0.5) -- Pequeno tempo antes de tentar novamente
+        task.wait(0.01) -- Pequeno tempo antes de tentar novamente
         continue
     end
 
@@ -19,6 +19,6 @@ while true do
         compass.Parent = character
         humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
         compass:Activate()
-        task.wait(0.2) -- Reduzido para ativação mais rápida
+        task.wait(0.05) -- Reduzido para ativação mais rápida
     end
 end
