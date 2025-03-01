@@ -21,6 +21,6 @@ while true do
         humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
         compass:Activate()
         
-        task.wait(0.3) -- Pequeno delay antes de ir para outro Compass
+        task.wait(0) -- Pequeno delay antes de ir para outro Compass
     end
 end
