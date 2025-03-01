@@ -1,14 +1,16 @@
 while true do
-    task.wait() -- Usa o menor delay possível sem travar o jogo
+    task.wait(0.001) -- Loop rápido para teleportar rapidamente
 
     local plr = game.Players.LocalPlayer
-    local backpack = plr and plr:FindFirstChild("Backpack")
-    local character = plr and plr.Character
+    local backpack = plr:FindFirstChild("Backpack")
+    local character = plr.Character
     local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 
     if not humanoidRootPart or not backpack or not humanoid then
-        continue -- Se faltar algo, ignora esta iteração
+        warn("[⚠] Erro: HumanoidRootPart, Backpack ou Humanoid não encontrado!")
+        task.wait(0.01)
+        continue
     end
 
     -- Pega a primeira Compass disponível
@@ -16,9 +18,9 @@ while true do
     if compass and compass:FindFirstChild("Poser") then
         humanoid:UnequipTools()
         compass.Parent = character
-        humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value) -- Corrigido para funcionar corretamente
+        humanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
         compass:Activate()
-
-        task.wait(0.2) -- Delay mínimo para otimizar velocidade sem bugar
+        
+        task.wait(0.35) -- Pequeno delay antes de ir para outro Compass
     end
 end
