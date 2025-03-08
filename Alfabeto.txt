@@ -1,0 +1,24 @@
+Α - α - Alfa
+Β - β - Beta
+Γ - γ - Gama
+Δ - δ - Delta
+Ε - ε - Épsilon
+Ζ - ζ - Zeta
+Η - η - Eta
+Θ - θ - Teta
+Ι - ι - Iota
+Κ - κ - Kapa
+Λ - λ - Lambda
+Μ - μ - Mi
+Ν - ν - Ni
+Ξ - ξ - Xi
+Ο - ο - Ómicron
+Π - π - Pi
+Ρ - ρ - Rô
+Σ - σ/ς - Sigma (σ no meio da palavra, ς no final)
+Τ - τ - Tau
+Υ - υ - Ípsilon
+Φ - φ - Fi
+Χ - χ - Qui
+Ψ - ψ - Psi
+Ω - ω - Ômega
