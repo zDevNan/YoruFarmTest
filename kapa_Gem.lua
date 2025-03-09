@@ -5,8 +5,6 @@ while wait(8) do
 
     -- Valores permitidos para afinidade
     local valoresPermitidos = {
-        [1.7] = true, 
-        [1.8] = true, 
         [1.9] = true, 
         [2.0] = true
     }
